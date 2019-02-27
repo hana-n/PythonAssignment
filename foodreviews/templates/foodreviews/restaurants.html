@@ -1,0 +1,8 @@
+<!-- based on your __str -->
+
+<h1>{{ category.name}}</h1>
+<ul>
+{% for restaurant in category.restaurant_set.all %}
+    <li><a href="{% url 'foodreviews:reviews' restaurant.id %}">{{ restaurant }}</li>
+{% endfor %}
+</ul>

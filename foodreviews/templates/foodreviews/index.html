@@ -1,0 +1,13 @@
+<!-- {% load static %} -->
+
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}"> -->
+
+{% if categories %}
+    <ul>
+    {% for category in categories %}
+        <li><a href="{% url 'foodreviews:restaurants' category.id %}">{{ category.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No categories are available.</p>
+{% endif %}

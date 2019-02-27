@@ -1,0 +1,12 @@
+<h1>{{ restaurant.name }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<ul>
+{% for review in restaurant.review_set.all %}
+    <li>{{ review.rating }}</li>
+    <li>{{ review.experience_text }}</li>
+{% endfor %}
+</ul>
+
+<!-- <a href="{% url 'foodreviews:restaurants' restaurant.id %}">Vote again?</a>   -->
