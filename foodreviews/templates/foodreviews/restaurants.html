@@ -1,8 +1,18 @@
-<!-- based on your __str -->
+{% extends 'base.html' %}
+{% load static %}
 
+{% block content %}
 <h1>{{ category.name}}</h1>
-<ul>
+<br>
 {% for restaurant in category.restaurant_set.all %}
-    <li><a href="{% url 'foodreviews:reviews' restaurant.id %}">{{ restaurant }}</li>
+
+<div style=width:1000px>
+    <h3><b><a href="{% url 'foodreviews:reviews' restaurant.id %}">{{ restaurant }}</b></h3>
+        <h4>{{restaurant.address}}</h4>
+    </div>
+        {% if restaurant.image %}
+            <img src="{{ restaurant.image.url }}">
+        {% endif %}
+    <br><br>
 {% endfor %}
-</ul>
+{% endblock %}

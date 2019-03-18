@@ -1,12 +1,97 @@
-<h1>{{ restaurant.name }}</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block content %}
 
-<ul>
-{% for review in restaurant.review_set.all %}
-    <li>{{ review.rating }}</li>
-    <li>{{ review.experience_text }}</li>
+<div>
+<h1><b>{{restaurant.name}}</b></h1>
+
+{% with avg_ratings=restaurant.avg_ratings %}
+<h3> Overall Rating | <b>{{avg_ratings.rating__avg}} </b></h3>
+{% endwith %}
+
+{% with restaurant.reviews.count as total_reviews %}
+<h3>Number of Reviews | <b>{{total_reviews}}</b></h3>
+<br>
+<hr width="950px">
+{% endwith %}
+</div>
+
+{% for review in restaurant.reviews.all %}
+
+<div>
+    <b>
+        <h4 style="color:steelblue">{{review.created_by}}
+    </b> | {{ review.pub_date}} </h4>
+    <div>
+        {% with review.likes.count as total_likes %}
+
+        {% if user != review.likes.get.liked_by %}
+        {{total_likes}} <img src="/media/icons/like.png/" style=height:10px;width:10px>
+        <!-- Only a user who is logged in, is not the reviewer and has not already liked it can like a review -->
+        {% else %}
+        <!-- If user has liked the review: -->
+        {{total_likes}} <img src="/media/icons/like.png/" style=height:10px;width:10px> including you
+        {% endif%}        
+        {% endwith %}
+
+        {% if user.is_authenticated and user != review.created_by and user != review.likes.get.liked_by %}
+        <a class="btn" style="color:rgb(89, 109, 167);background-color:#f0f0f5" href="{% url 'foodreviews:like' review.id %}">Like</a>
+        {% endif %}
+
+        <br><br>
+    </div>
+</div>
+
+
+    <h4><b>Rating</b> | {{review.rating}}</h4>
+    <div style=width:930px;text-align:justify>
+    <h4><b>Review </b> | {{review.experience_text}}</h4>
+    </div>
+
+    <!-- If review has a photo: -->
+    {% if review.photo %}
+    <img src="{{review.photo.url}}">
+    <br>
+    {% endif%}
+    <!-- if user did not create the review: -->
+    {% if user != review.created_by %}
+    <br>
+    <a class="btn btn-primary" href="{% url 'foodreviews:add_comment' review.id %}">Comment</a>
+    <br>
+    {% endif %}
+
+    <!-- If user created the review: -->
+    {% if user == review.created_by %}
+    <br>
+    <a class="btn btn-success" href="{% url 'foodreviews:update_review' review.id %}">Update</a>
+    <a class="btn btn-danger" href="{% url 'foodreviews:delete_review' review.id %}">Delete</a>
+    {% endif %}
+    {% for comment in review.comments.all %}
+    <div class="content container">
+            <div class="row">
+            <div class="col-md-8">
+                <hr width="925px">
+                <p><strong>{{comment.created_by}}</strong> | {{comment.created_date}} </p>
+                <p>{{comment.comment_text}}</p>
+                {% if user == review.created_by %}
+                <a class="btn btn-primary" href="{% url 'foodreviews:add_reply' comment.id %}">Reply</a>
+                {% endif %}
+                {% for reply in comment.replies.all %}
+                <div class="content container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <hr width="900px">
+                            <p style="color:steelblue"><strong> {{reply.replied_by}} </strong> | {{reply.reply_date}} </p>
+                           {{reply.reply_text}}
+                        </div>
+                    </div>  
+                </div>           
+                {% endfor %}
+            </div>
+        </div>
+    </div>    
+    {% endfor %}       
+    <hr>
 {% endfor %}
-</ul>
-
-<!-- <a href="{% url 'foodreviews:restaurants' restaurant.id %}">Vote again?</a>   -->
+{% endblock %}

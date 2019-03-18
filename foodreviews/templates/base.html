@@ -1,0 +1,40 @@
+{% load static %}
+<html>
+    <head>
+        <title>Food Reviews</title>
+        
+        <link rel="stylesheet" type="text/css" href="{% static 'foodreviews/style.css' %}"> 
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="page-header">
+            <div class="container">
+            <div class="pull-right">
+                {% if user.is_authenticated %}
+                Hi {{ user.username }}!
+                <p><a class="btn btn-info" href="{% url 'logout' %}">Logout</a></p>
+                {% else %}
+                <p>You are not logged in!</p>
+                <a class="btn btn-info" href="{% url 'login' %}">Login</a>
+                {% endif %}
+                <br>
+            </div>              
+            {% if user.is_authenticated %}
+            <div class="pull-left"> 
+            <h4 style=margin-top:-8px><a href="/foodreviews/reviews/add" class="top-menu"> Add Review <span class="glyphicon glyphicon-plus"></span></a></h4>
+            </div><br>
+            {% endif %}    
+            <br>
+            <h1 style=margin-top:-16px> <img src="/media/icons/cnh_logo_trans.png" style=height:110px;width:110px>  <a href="/foodreviews">Food Reviews</a></h1>
+        </div>    
+    </div>
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

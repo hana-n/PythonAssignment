@@ -1,0 +1,21 @@
+.container {
+    width: 300px;
+  }
+  
+img {
+  max-height: 70%;
+  max-width: 70%;
+}
+
+.myimg {
+  max-height: 45%;
+  max-width: 45%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+
+h1 {
+  color: darkgray
+}
+

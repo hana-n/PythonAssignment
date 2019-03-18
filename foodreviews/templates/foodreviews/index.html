@@ -1,13 +1,16 @@
-<!-- {% load static %} -->
+{% extends 'base.html' %}
+{% load static %}
 
-<!-- <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}"> -->
-
+{% block title %}Categories{% endblock %}
+{% block content %}
+<h1>Categories</h1>
+<br>
 {% if categories %}
-    <ul>
-    {% for category in categories %}
-        <li><a href="{% url 'foodreviews:restaurants' category.id %}">{{ category.name }}</a></li>
+    {% for category in categories %}    
+        <h3><a href="{% url 'foodreviews:restaurants' category.id %}">{{ category.name }}</a></h3>    
     {% endfor %}
-    </ul>
 {% else %}
     <p>No categories are available.</p>
 {% endif %}
+
+{% endblock %}

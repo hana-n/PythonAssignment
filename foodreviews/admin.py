@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import Category, Restaurant, Review
+from .models import Category, Restaurant, Review, Comment
 
 admin.site.register(Category)
 admin.site.register(Restaurant)
 admin.site.register(Review)
+admin.site.register(Comment)
+
