@@ -6,6 +6,7 @@ from django.contrib.staticfiles.urls import static
 from foodreviews import views
 
 urlpatterns = [
+    url(r'^$', views.IndexView.as_view(template_name='foodreviews/index.html'), name='home'),
     path('foodreviews/', include('foodreviews.urls')),
     path('admin/', admin.site.urls),
     path('', include('django.contrib.auth.urls')),
